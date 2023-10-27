@@ -5,10 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #resetF {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 
 <body>
+    <div>
+        <label for="winNum">Select how many rounds</label>
+        <select name="winNum" id="winNum">
+            <option value="3">3</option>
+            <option value="5">5</option>
+            <option value="7">7</option>
+        </select>
+    </div>
+    <div>
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+        <br>
+        <button id="resetF">Reset</button>
+    </div>
 
+
+    <div>
+        <h1><span id="pScore"> 0 </span> to <span id="cScore"> 0 </span></h1>
+        <h5 id="roundW"></h5>
+        <h3 id="winner"></h3>
+    </div>
     <script src="script.js"></script>
 </body>
 

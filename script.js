@@ -1,110 +1,96 @@
-// let playerSelection = prompt("Enter Rock, Paper or Scissors to play the game.").toLowerCase();
-
-
-
+// game();
 let getComputerChoice = () => {
     let rand = Math.floor((Math.random() * 3))
     let choices = ["Rock", "scissors", "Paper"]
     return choices[rand].toLowerCase()
 }
-// const computerSelection = getComputerChoice();
 
-// let playRound = (playerSelection, computerSelection) => {
-//     if (playerSelection === computerSelection) {
-//         return "It's a draw, try again!"
-//     } else if (playerSelection == "rock") {
-//         if (computerSelection == "scissors") {
-//             return "Congrats, you win!"
-//         } else {
-//             return "You lose! Paper covers rock :("
-//         }
-//     } else if (playerSelection == "scissors") {
-//         if (computerSelection == "rock") {
-//             return "You lose! Rock crushes scissors :("
-//         } else {
-//             return "Congrats, you win!"
-//         }
-//     } else if (playerSelection == "paper") {
-//         if (computerSelection == "rock") {
-//             return "Congrats, you win!"
-//         } else {
-//             return "You lose! Scissors slice up paper :("
-//         }
-//     }
-// }
-// let playRound = (playerSelection, computerSelection) => {
-//     if (playerSelection === computerSelection) {
-//         return "It's a draw, try again!"
-//     } else if (playerSelection == "rock" && computerSelection == "scissors" || playerSelection == "scissors" && computerSelection == "paper" || playerSelection == "paper" && computerSelection == "rock") {
-//         return "Congrats, you win!"
-//     } else if (playerSelection == "scissors" && computerSelection == "rock" || playerSelection == "paper" && computerSelection == "scissors" || playerSelection == "rock" && computerSelection == "paper") {
-//         return `You lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1)} beats ${playerSelection}!`
-//     }
-// }
 let computerSelection;
 let playerSelection;
-function game() {
-    let userWins = {
-        score: 0
-    };
-    let compWins = {
-        score: 0
-    };
-    const winNum = 3;
 
+// function game() {
+let userWins = {
+    score: 0,
+    display: document.querySelector('#pScore')
+};
+let compWins = {
+    score: 0,
+    display: document.querySelector('#cScore')
+};
+let winNum = 3;
 
-    while (userWins.score < winNum && compWins.score < winNum) {
-        let userInput = false;
-        while (!userInput) {
-            playerSelection = prompt("Enter Rock, Paper or Scissors to play the game.").toLowerCase();
-            if (playerSelection.includes("rock") || playerSelection.includes("paper") || playerSelection.includes("scissors")) {
-                userInput = true;
-                break;
-            } else {
-                alert("You must enter either rock, paper or scissors!")
-            }
-        }
+let winneR = document.querySelector('#winner');
+let roundW = document.querySelector('#roundW')
+const options = document.querySelectorAll('#rock, #paper, #scissors');
+
+options.forEach(option => {
+    option.addEventListener('click', function (e) {
+        console.log('click ' + e.target.id)
         computerSelection = getComputerChoice();
-
-        let playRound = (playerSelection, computerSelection) => {
-            if (playerSelection === computerSelection) {
-                alert("It's a draw! Score: " + userWins.score + "to " + compWins.score)
-                return "It's a draw, try again!"
-            } else if (playerSelection == "rock" && computerSelection == "scissors" || playerSelection == "scissors" && computerSelection == "paper" || playerSelection == "paper" && computerSelection == "rock") {
-                userWins.score += 1
-                return `Congrats, you win this round!\n ${userWins.score} to ${compWins.score}`
-            } else if (playerSelection == "scissors" && computerSelection == "rock" || playerSelection == "paper" && computerSelection == "scissors" || playerSelection == "rock" && computerSelection == "paper") {
-                compWins.score += 1
-                return `You lose! ${computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1)} beats ${playerSelection}! \n ${userWins.score} to ${compWins.score}`
-            }
-        }
-
+        playerSelection = e.target.id;
         const result = playRound(playerSelection, computerSelection)
+        if (userWins.score >= winNum) {
+            options.forEach(option => option.disabled = true);
+            winneR.textContent = "Congrats you win the game!"
+        } else if (compWins.score >= winNum) {
+
+            options.forEach(option => option.disabled = true);
+            winneR.textContent = "Sorry you lost this game! Try again."
+        }
         console.log(result)
+    })
+})
+
+
+
+let playRound = (playerSelection, computerSelection) => {
+    if (playerSelection === computerSelection) {
+        roundW.textContent = `It's a draw! Both picked ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1)}`
+        // return "It's a draw, try again!"
+    } else if (playerSelection == "rock" && computerSelection == "scissors" ||
+        playerSelection == "scissors" && computerSelection == "paper" ||
+        playerSelection == "paper" && computerSelection == "rock") {
+        userWins.score += 1;
+        userWins.display.textContent = userWins.score;
+        roundW.textContent = `You win this round!\n ${playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1)} beats ${computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1)}`
+    } else if (playerSelection == "scissors" && computerSelection == "rock" ||
+        playerSelection == "paper" && computerSelection == "scissors" ||
+        playerSelection == "rock" && computerSelection == "paper") {
+        compWins.score += 1;
+        compWins.display.textContent = compWins.score;
+        roundW.textContent = `You lose this round! ${computerSelection.charAt(0).toUpperCase() + computerSelection.slice(1)} beats ${playerSelection}`
     }
-    if (userWins.score >= winNum) {
-        console.log("Congrats you win the game!")
-    } else if (compWins.score >= winNum) {
-        console.log("Sorry you lost this game! Try again.")
-    }
+
 }
 
+let winner = document.querySelector('#winNum');
+
+const winningFunction = () => {
+    const selectedOption = winner.options[winner.selectedIndex];
+    winNum = selectedOption.value;
+    reset();
+}
+
+winner.addEventListener('change', winningFunction)
+
+let reset = () => {
+    userWins.score = 0;
+    compWins.score = 0;
+    userWins.display.textContent = userWins.score;
+    compWins.display.textContent = compWins.score;
+    options.forEach(option => option.disabled = false)
+    winneR.textContent = ""
+}
+let resetF = document.querySelector('#resetF')
+resetF.addEventListener('click', reset)
 
 
 
-game();
 
-// compare playSelect to computerSelection
-// if player == computer 
-// return draw
-// if player != computer
-//     if player = Rock
-
-// let scoreTrack = (p1, p2) => {
-//     p1.score++;
-//     if (p1 == winNum) {
-//         console.log("Congrats you win the game!")
-//     } else if (p2 == winNum) {
-//         console.log("Sorry, you lost the game! Try again.")
-//     }
 // }
+
+
+
+
+
+
